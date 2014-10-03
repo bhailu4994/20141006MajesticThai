@@ -9,5 +9,8 @@
     "firebase": "~1.1.0",
     "backfire": "~0.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "backbone": "<=1.1.0"
+  }
 }
