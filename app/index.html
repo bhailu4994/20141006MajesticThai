@@ -38,9 +38,11 @@
             
             
             <sidebar>
+            <div class="shoppingCart">
             Shopping Cart.
+            </div>
+
             <div class="highlightedItem">
-            <img src="http://placekitten.com/g/200/200" />
             </div>
             </sidebar>
         </div>
@@ -74,6 +76,18 @@
     <p><%= this.model.get("name") %></p>
     </button>
     </script>
+
+    <script type="text/template" id="sCartView">
+    <button>PLACE ORDER</button>
+    </script>
+    
+
+    <script type="text/template" id="hItemView">
+    <img src="http://placekitten.com/g/200/200" />
+    <p><%= this.model.get("name") %></p>  
+    <button>ADD TO MY ORDER</button>  
+    </script>
+    <!-- Change above to description -->
 
 
 

@@ -17,10 +17,14 @@ App.Models.MenuItem = Backbone.Model.extend ({
 	},
 });
 
-App.Models.Beer = Backbone.Model.extend ({
+App.Models.Beer = App.Models.MenuItem.extend ({
 	defaults: {
 		name: 'i',
 	},
+});
+
+App.Models.ItemToOrder = App.Models.MenuItem.extend({
+
 });
 
 // COLLECTIONS
@@ -29,11 +33,17 @@ App.Collections.MenuItems = Backbone.Collection.extend ({
 	model: App.Models.MenuItem
 });
 
-App.Collections.BeerList = Backbone.Collection.extend ({
+App.Collections.BeerList = App.Collections.MenuItems.extend ({
 	model: App.Models.Beer,
 });
 
 var beers = [ {name: 'Chang'}, {name: 'Dead Guy Ale'}, {name: 'Heineken'}, {name: 'Newcastle'}, {name: 'Singha'} ];
+
+
+App.Collections.ItemsToOrder = App.Collections.MenuItems.extend ({
+	model: App.Models.ItemToOrder
+});
+
 
 // VIEWS
 
@@ -135,9 +145,43 @@ App.Views.ItemView = Backbone.View.extend ({
 });
 
 
-App.Views.HItemView = Backbone.View.extend ({
+App.Views.SCartView = Backbone.View.extend ({
+	
+	initialize: function() {
+		this.listenTo(this.collection, 'add', this.render());	/*line 75 in last project didn't have () here...*/
+	},
+
+	template: _.template( $('#sCartView').text() ),
+
 	render: function () {
-		this.$el.html(this.model.get("name"));
+		this.$el.html(this.template());
+		$('.shoppingCart').empty();
+		$('.shoppingCart').append(this.el);
+	}
+});
+
+
+
+	var itemsToOrder = new App.Collections.ItemsToOrder();
+	var sCartView = new App.Views.SCartView({collection: itemsToOrder});
+
+
+
+App.Views.HItemView = Backbone.View.extend ({
+	template: _.template( $('#hItemView').text() ),
+
+	events: {
+		'click button': 'addToSCartList'
+	},
+
+	addToSCartList: function(event) {
+		console.log(event);
+		var itemToOrder = sCartView.collection.add({name: this.model.attributes});
+		console.log(sCartView.collection);
+	},
+
+	render: function () {
+		this.$el.html(this.template());
 		$('.highlightedItem').empty();
 		$('.highlightedItem').append(this.el);
 	}
