@@ -114,11 +114,14 @@ App.Views.SpecialsView = Backbone.View.extend ({
 App.Views.ItemView = Backbone.View.extend ({
 	tagName: 'li',
 	render: function () {
-		this.$el.html('yo');
-		$('.this.catTitle').append(this.el);
+		console.log("Model: ",this.model)
+		this.$el.html(this.model.get("name"));
+		$('.'+this.catTitle).append(this.el);
 	}
 });
 
+
+// SPECIFIC CATEGORY VIEWS
 
 App.Views.BasicDrinksView = Backbone.View.extend ({
 	
