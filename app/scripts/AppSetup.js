@@ -17,6 +17,12 @@ App.Models.MenuItem = Backbone.Model.extend ({
 	},
 });
 
+App.Models.Starter = App.Models.MenuItem.extend ({
+	defaults: {
+		name: 'i',
+	},
+})
+
 App.Models.Beer = App.Models.MenuItem.extend ({
 	defaults: {
 		name: 'i',
@@ -33,15 +39,19 @@ App.Collections.MenuItems = Backbone.Collection.extend ({
 	model: App.Models.MenuItem
 });
 
+App.Collections.StartersList = App.Collections.MenuItems.extend ({
+	model: App.Models.Starter,
+});
+var starters = [ {name: 'Thai Chicken Wings'}, {name: 'Som Tam'} ];
+
 App.Collections.BeerList = App.Collections.MenuItems.extend ({
 	model: App.Models.Beer,
 });
-
 var beers = [ {name: 'Chang'}, {name: 'Dead Guy Ale'}, {name: 'Heineken'}, {name: 'Newcastle'}, {name: 'Singha'} ];
 
 
 App.Collections.ItemsToOrder = App.Collections.MenuItems.extend ({
-	model: App.Models.ItemToOrder
+	model: App.Models.MenuItem
 });
 
 
@@ -87,9 +97,18 @@ App.Views.MainView = Backbone.View.extend ({
 
 
 App.Views.FoodView = Backbone.View.extend ({	
+	
+	template: _.template( $('#menuSectionView').text() ),
+
+	description: 'All organic, k?',
+
 	render: function () {
-		this.$el.html('YO');
+		this.$el.html(this.template());
 		$('.dynamicViewLoader').append(this.el);
+		var startersList = new App.Collections.StartersList();
+		startersList.set(starters);
+		var startersView = new App.Views.StartersView({collection: startersList});
+		startersView.render();
 	}
 });
 
@@ -131,8 +150,10 @@ App.Views.ItemView = Backbone.View.extend ({
 
 	displayInSidebar: function(event) {
 		// pass model to sidebarView
-		console.log(event);
+		// console.log(event);
+		if (!hItemView) {
 		var hItemView = new App.Views.HItemView({ model: this.model });
+		};
 		hItemView.render();
 	},
 
@@ -148,13 +169,14 @@ App.Views.ItemView = Backbone.View.extend ({
 App.Views.SCartView = Backbone.View.extend ({
 	
 	initialize: function() {
-		this.listenTo(this.collection, 'add', this.render());	/*line 75 in last project didn't have () here...*/
+		this.listenTo(this.collection, 'add', this.render);	/*line 75 in last project didn't have () here...*/
 	},
 
 	template: _.template( $('#sCartView').text() ),
 
 	render: function () {
-		this.$el.html(this.template());
+		console.log(this.collection.length);
+		this.$el.html(this.template({collection: this.collection}));
 		$('.shoppingCart').empty();
 		$('.shoppingCart').append(this.el);
 	}
@@ -162,22 +184,37 @@ App.Views.SCartView = Backbone.View.extend ({
 
 
 
-	var itemsToOrder = new App.Collections.ItemsToOrder();
-	var sCartView = new App.Views.SCartView({collection: itemsToOrder});
+var itemsToOrder = new App.Collections.ItemsToOrder();
+var sCartView = new App.Views.SCartView({collection: itemsToOrder});
 
 
 
 App.Views.HItemView = Backbone.View.extend ({
+	
+	initialize: function () {
+		this.collection = itemsToOrder;
+	},
+
 	template: _.template( $('#hItemView').text() ),
 
 	events: {
-		'click button': 'addToSCartList'
+		'click button[class=addIt]': 'addToSCartList'
 	},
 
 	addToSCartList: function(event) {
 		console.log(event);
-		var itemToOrder = sCartView.collection.add({name: this.model.attributes});
-		console.log(sCartView.collection);
+		// if (!window.itemsToOrder) { 
+		// 	window.itemsToOrder = new App.Collections.ItemsToOrder(); 
+		// 	window.sCartView = new App.Views.SCartView({collection: window.itemsToOrder});
+		// }
+		// var itemToOrder = this.model;
+		this.collection.add(this.model);
+		console.log(this.model);
+		// console.log(itemToOrder);
+		console.log(sCartView.collection.length);
+		console.log("Colleciton: ",this.collection)
+
+		// console.log(this.model);
 	},
 
 	render: function () {
@@ -188,7 +225,32 @@ App.Views.HItemView = Backbone.View.extend ({
 });
 
 
+
+
+
 // SPECIFIC CATEGORY VIEWS
+
+
+App.Views.StartersView = Backbone.View.extend ({
+	
+	template: _.template( $('#specificCatView').text() ),
+
+	catTitle: 'Starters',
+
+	render: function () {
+	this.$el.html(this.template());
+	$('.description').append(this.el);
+	this.collection.each(_.bind(this.renderChild, this));
+	},
+
+	renderChild: function(starter){
+    var itemView = new App.Views.ItemView({ model: starter });
+    itemView.render();
+    this.$el.append(itemView.el);
+  	}
+
+});
+
 
 App.Views.BasicDrinksView = Backbone.View.extend ({
 	

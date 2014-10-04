@@ -79,13 +79,18 @@
 
     <script type="text/template" id="sCartView">
     <button>PLACE ORDER</button>
+    <%=collection.length%> items are in your cart.
+    <% _(this.collection.models).each(function(model) {%>
+        <%=model.get('name')%><%
+    }) %>
+
     </script>
-    
+    <!--   -->
 
     <script type="text/template" id="hItemView">
     <img src="http://placekitten.com/g/200/200" />
     <p><%= this.model.get("name") %></p>  
-    <button>ADD TO MY ORDER</button>  
+    <button class="addIt">ADD TO MY ORDER</button>  
     </script>
     <!-- Change above to description -->
 
