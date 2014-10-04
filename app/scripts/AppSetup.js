@@ -115,15 +115,33 @@ App.Views.ItemView = Backbone.View.extend ({
 	tagName: 'li',
 	template: _.template( $('#thumbnailView').text() ),
 
+	events: {
+		'click button': 'displayInSidebar'
+	},
+
+	displayInSidebar: function(event) {
+		// pass model to sidebarView
+		console.log(event);
+		var hItemView = new App.Views.HItemView({ model: this.model });
+		hItemView.render();
+	},
+
 	render: function () {
-		console.log("Model: ",this.model)
+		// console.log("Model: ",this.model)
 		this.$el.html(this.template());
 		$('.'+this.catTitle).append(this.el);
-	}
+	},
+
 });
 
 
-// this.model.get("name")
+App.Views.HItemView = Backbone.View.extend ({
+	render: function () {
+		this.$el.html(this.model.get("name"));
+		$('.highlightedItem').empty();
+		$('.highlightedItem').append(this.el);
+	}
+});
 
 
 // SPECIFIC CATEGORY VIEWS
