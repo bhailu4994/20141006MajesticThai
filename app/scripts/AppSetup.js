@@ -33,7 +33,7 @@ App.Collections.BeerList = Backbone.Collection.extend ({
 	model: App.Models.Beer,
 });
 
-var beers = [ {name: 'chang'}, {name: 'bud'}, {name: 'singha'} ];
+var beers = [ {name: 'Chang'}, {name: 'Dead Guy Ale'}, {name: 'Heineken'}, {name: 'Newcastle'}, {name: 'Singha'} ];
 
 // VIEWS
 
@@ -113,12 +113,17 @@ App.Views.SpecialsView = Backbone.View.extend ({
 
 App.Views.ItemView = Backbone.View.extend ({
 	tagName: 'li',
+	template: _.template( $('#thumbnailView').text() ),
+
 	render: function () {
 		console.log("Model: ",this.model)
-		this.$el.html(this.model.get("name"));
+		this.$el.html(this.template());
 		$('.'+this.catTitle).append(this.el);
 	}
 });
+
+
+// this.model.get("name")
 
 
 // SPECIFIC CATEGORY VIEWS

@@ -39,6 +39,9 @@
             
             <sidebar>
             Shopping Cart.
+            <div class="highlightedItem">
+            <img src="http://placekitten.com/g/200/200" />
+            </div>
             </sidebar>
         </div>
     </div>
@@ -63,6 +66,13 @@
     <script type="text/template" id="specificCatView">
     <h3><%= this.catTitle %></h3>
     <ul class="<%= this.catTitle %>"></ul>  
+    </script>
+
+    <script type="text/template" id="thumbnailView">
+    <button>
+    <img src="http://placekitten.com/g/75/75" />
+    <p><%= this.model.get("name") %></p>
+    </button>
     </script>
 
 

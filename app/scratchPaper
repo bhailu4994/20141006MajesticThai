@@ -91,39 +91,3 @@ body {
         border-bottom: 0;
     }
 }
-
-
-// PDL styles
-
-
-header {
-    text-align: center;
-}
-
-section {
-    display: inline-block;
-    width: 70%;
-}
-
-sidebar {
-    display: inline-block;
-    width: 29%;
-    vertical-align: top;
-}
-
-// ul {
-//     list-style: none;
-// }
-
-li {                                /* Not sure why making the p a block element INSIDE the li still causes it to knock shit down... */
-    display: inline-block;
-    max-width: 75px;
-    vertical-align: top;
-    margin: 1em 3em 0 0;
-    
-    // p {
-    //     display: inline-block;
-    // }
-}
-
-
