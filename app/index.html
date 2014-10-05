@@ -26,7 +26,13 @@
         <![endif]-->
 
     <div class="container">
-        <header><h1>Majestic Thai</h1></header>
+        <header><h1>Majestic Thai</h1>
+        <nav>
+        <a href="about.html">About</a>
+        <a href="menu.html">Menu</a>
+        <a href="locations.html">Locations</a>
+        </nav>
+        </header>
         <div class="mainSecContainer">
             
 
@@ -38,11 +44,17 @@
             
             
             <sidebar>
-            Shopping Cart.
+            <div class="shoppingCart">
+            Sawadee Khap :)
+            </div>
+
             <div class="highlightedItem">
-            <img src="http://placekitten.com/g/200/200" />
+            Please click on a menu item to expand its view.
             </div>
             </sidebar>
+            <footer>
+            Copyright 2014 Pat Love & Majestic Thai
+            </footer>
         </div>
     </div>
 
@@ -70,10 +82,61 @@
 
     <script type="text/template" id="thumbnailView">
     <button>
-    <img src="http://placekitten.com/g/75/75" />
+    <img class="thumbnail" src="<%= this.model.get('imageUrl') %>" />
     <p><%= this.model.get("name") %></p>
     </button>
     </script>
+
+
+<!--     <%=collection.length%> items are in your cart. -->
+    <script type="text/template" id="sCartView">
+    <p>YOUR ORDER:</p>
+    <% _(this.collection.models).each(function(model) {%>
+    <p> <%=model.get('name')%> 
+    <% if (model.get('needsMeat') === true) {%> (<%=model.get('meatType')%>) <%}%>
+    <% if (model.get('needsNoodle') === true) {%> (<%=model.get('noodleType')%>) <%}%>
+    Qty: <%=model.get('quantity')%> <button data-id=<%=model.cid%> class="removeIt">X</button> </p>
+    
+    <%})%>
+    <%var totalCost=30;%>
+    <p>Your bill is currently: <%=totalCost%> baht</p>
+    <button>PLACE ORDER</button>
+
+    </script>
+    <!-- <%var totalCost = _.reduce(this.collection.models.get('price'), function(acum, b) {return acum+b}); console.log(totalCost);%>  -->
+
+
+
+    <!-- <img src="http://placekitten.com/g/200/200" /> -->
+    <script type="text/template" id="hItemView">
+    <img class="hIImg" src="<%= this.model.get('imageUrl') %>" />
+    <h4><%= this.model.get("name") %></h4> 
+    <p><%= this.model.get('description') %></p>
+    <p><%= this.model.get('price') %> baht</p>
+    <p>Quantity: <input type="text" id="quantity" value="1" size="2"></p>
+   
+    <% if (this.model.get('needsMeat') === true) {%>
+        Please select a type of meat for this item:
+        <select name="meatSelect" id="meatSelect">
+        <option value='1'>Kai (chicken)</option>
+        <option value='2'>Moo (pork)</option>
+        <option value='3'>Kung (shrimp)</option>
+        <option value='3'>Mang Sa Wirat (vegetarian)</option>
+        </select>
+    <%}%>
+
+    <% if (this.model.get('needsNoodle') === true) {%>
+        Please select a type of noodle for this item:
+        <select name="noodleSelect" id="noodleSelect">
+        <option value='1'>Sen Yai (thick flat noodle)</option>
+        <option value='2'>Sen Lek (small flat noodle)</option>
+        <option value='3'>Sen Mee (thin, round vermicelli-ish rice noodle)</option>
+        </select>
+    <%}%>
+
+    <button class="addIt">ADD TO MY ORDER</button>  
+    </script>
+    <!-- Change above to description -->
 
 
 
