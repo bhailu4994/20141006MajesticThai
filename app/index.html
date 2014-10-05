@@ -77,19 +77,45 @@
     </button>
     </script>
 
+
+<!--     <%=collection.length%> items are in your cart. -->
     <script type="text/template" id="sCartView">
-    <button>PLACE ORDER</button>
-    <%=collection.length%> items are in your cart.
+    <p>YOUR ORDER:</p>
     <% _(this.collection.models).each(function(model) {%>
-        <%=model.get('name')%><%
-    }) %>
+    <p> <%=model.get('name')%> 
+    <% if (model.get('needsMeat') === true) {%> (<%=model.get('meatType')%>) <%}%>
+    <% if (model.get('needsNoodle') === true) {%> (<%=model.get('noodleType')%>) <%}%>
+    Qty: <%=model.get('quantity')%> <button>X</button> </p>
+    
+    <%})%>
+    <button class="removeIt">PLACE ORDER</button>
 
     </script>
     <!--   -->
 
     <script type="text/template" id="hItemView">
     <img src="http://placekitten.com/g/200/200" />
-    <p><%= this.model.get("name") %></p>  
+    <p><%= this.model.get("name") %></p> 
+    <p>Quantity: <input type="text" id="quantity" value="1" size="2"></p>
+   
+    <% if (this.model.get('needsMeat') === true) {%>
+        Please select a type of meat for this item:
+        <select name="meatSelect" id="meatSelect">
+        <option value='1'>Gai (chicken)</option>
+        <option value='2'>Moo (pork)</option>
+        <option value='3'>Mang Sa Wirat (vegetarian)</option>
+        </select>
+    <%}%>
+
+    <% if (this.model.get('needsNoodle') === true) {%>
+        Please select a type of noodle for this item:
+        <select name="noodleSelect" id="noodleSelect">
+        <option value='1'>Sen Yai (thick flat noodle)</option>
+        <option value='2'>Sen Lek (small flat noodle)</option>
+        <option value='3'>Sen Mee (thin, round vermicelli-ish rice noodle)</option>
+        </select>
+    <%}%>
+
     <button class="addIt">ADD TO MY ORDER</button>  
     </script>
     <!-- Change above to description -->

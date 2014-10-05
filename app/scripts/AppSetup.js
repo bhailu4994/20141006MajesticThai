@@ -13,7 +13,10 @@ App.Routers = {};
 
 App.Models.MenuItem = Backbone.Model.extend ({
 	defaults: {
-		name: '',
+		name: 'i',
+		needsMeat: 'false',
+		needsNoodle: 'false',
+		quantity: 1
 	},
 });
 
@@ -21,7 +24,13 @@ App.Models.Starter = App.Models.MenuItem.extend ({
 	defaults: {
 		name: 'i',
 	},
-})
+});
+
+App.Models.Entree = App.Models.MenuItem.extend ({
+	defaults: {
+		name: 'i',
+	}
+});
 
 App.Models.Beer = App.Models.MenuItem.extend ({
 	defaults: {
@@ -29,9 +38,9 @@ App.Models.Beer = App.Models.MenuItem.extend ({
 	},
 });
 
-App.Models.ItemToOrder = App.Models.MenuItem.extend({
+// App.Models.ItemToOrder = App.Models.MenuItem.extend({
 
-});
+// });
 
 // COLLECTIONS
 
@@ -43,6 +52,11 @@ App.Collections.StartersList = App.Collections.MenuItems.extend ({
 	model: App.Models.Starter,
 });
 var starters = [ {name: 'Thai Chicken Wings'}, {name: 'Som Tam'} ];
+
+App.Collections.EntreesList = App.Collections.MenuItems.extend ({
+	model: App.Models.Entree,
+});
+var entrees = [ {name: 'Gaeng Kiowan', needsMeat: true, meatType: 'chicken'}, {name: 'Red Curry', needsMeat: true}, {name: 'Noodle Soup', needsMeat: true, needsNoodle: true}, {name: 'Pad Thai', needsMeat: true}, {name: 'Pad Ka Pow Moo Kai Dow'}, {name: 'Chicken and Salsa on rice'} ];
 
 App.Collections.BeerList = App.Collections.MenuItems.extend ({
 	model: App.Models.Beer,
@@ -109,6 +123,10 @@ App.Views.FoodView = Backbone.View.extend ({
 		startersList.set(starters);
 		var startersView = new App.Views.StartersView({collection: startersList});
 		startersView.render();
+		var entreesList = new App.Collections.EntreesList();
+		entreesList.set(entrees);
+		var entreesView = new App.Views.EntreesView({collection: entreesList});
+		entreesView.render(); 
 	}
 });
 
@@ -202,17 +220,43 @@ App.Views.HItemView = Backbone.View.extend ({
 	},
 
 	addToSCartList: function(event) {
+		console.log("Seleceted: ",$("#meatSelect").val());
 		console.log(event);
 		// if (!window.itemsToOrder) { 
 		// 	window.itemsToOrder = new App.Collections.ItemsToOrder(); 
 		// 	window.sCartView = new App.Views.SCartView({collection: window.itemsToOrder});
 		// }
 		// var itemToOrder = this.model;
+
+		this.model.set({quantity: $('#quantity').val()});
+
+		if ($('#meatSelect')) {
+    		if ($("#meatSelect").val() == "1") {
+        		this.model.set({meatType: "chicken"});
+    		} else if ($("#meatSelect").val() == '2') {
+        		this.model.set({meatType: "pork"});
+    		} else {
+        		this.model.set({meatType: "vegetarian"});
+    		}
+		};	
+
+		if ($('#noodleSelect')) {
+    		if ($("#noodleSelect").val() == "1") {
+        		this.model.set({noodleType: "Sen Yai"});
+    		} else if ($("#noodleSelect").val() == '2') {
+        		this.model.set({noodleType: "Sen Lek"});
+    		} else {
+        		this.model.set({noodleType: "Sen Mee"});
+    		}
+		};	
+
+
+
+
 		this.collection.add(this.model);
 		console.log(this.model);
 		// console.log(itemToOrder);
 		console.log(sCartView.collection.length);
-		console.log("Colleciton: ",this.collection)
 
 		// console.log(this.model);
 	},
@@ -245,6 +289,26 @@ App.Views.StartersView = Backbone.View.extend ({
 
 	renderChild: function(starter){
     var itemView = new App.Views.ItemView({ model: starter });
+    itemView.render();
+    this.$el.append(itemView.el);
+  	}
+
+});
+
+App.Views.EntreesView = Backbone.View.extend ({
+	
+	template: _.template( $('#specificCatView').text() ),
+
+	catTitle: 'Entrees',
+
+	render: function () {
+	this.$el.html(this.template());
+	$('.description').append(this.el);
+	this.collection.each(_.bind(this.renderChild, this));
+	},
+
+	renderChild: function(entree){
+    var itemView = new App.Views.ItemView({ model: entree });
     itemView.render();
     this.$el.append(itemView.el);
   	}

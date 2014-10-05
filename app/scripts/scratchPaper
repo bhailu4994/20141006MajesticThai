@@ -1,0 +1,62 @@
+<% if (this.model.get('name') === 'Dead Guy Ale') {
+        this.model.set({nada: "March 20", content: "In his eyes she eclipses..."});
+    } %> 
+
+
+<script type="text/template" id="hItemView">
+    <img src="http://placekitten.com/g/200/200" />
+    <p><%= this.model.get("name") %></p> 
+    Quantity: <input type="text" placeholder="1">
+    <% if (this.model.get('name') === 'Dead Guy Ale') {%>
+        Please select a type of meat for this item:
+        <select name=select1>
+        <option>Gai (chicken)</option>
+        <option>Moo (pork)</option>
+        <option>Mang Sa Wirat (vegetarian)</option>
+        </select>
+    <%} %> 
+    <% if (this.model.get('name') === 'Heineken') {%>
+        Please select a type of noodle for this item:
+        <select name=select1>
+        <option>Sen Yai (thick flat noodle) </option>
+        <option>Sen Lek (small flat noodle)</option>
+        <option>Sen Mee (thin, round vermicelli-ish rice noodle)</option>
+        </select>
+    <%} %> 
+    <button class="addIt">ADD TO MY ORDER</button>  
+    </script>
+
+
+    ($('#meatSelect'[value === '2']))
+
+
+
+
+    <option>Sen Yai (thick flat noodle) </option>
+        <option>Sen Lek (small flat noodle)</option>
+        <option>Sen Mee (thin, round vermicelli-ish rice noodle)</option>
+
+
+
+            <% if (this.model.get('needsNoodle') === true) {%>
+        Please select a type of noodle for this item:
+        <form id="noodleSelect">
+        <input type="radio" name="noodle" value="Sen Yai">Sen Yai (thick flat noodle)
+        <input type="radio" name="noodle" value="Sen Lek">Sen Lek (small flat noodle)
+        <input type="radio" name="noodle" value="Sen Mee">Sen Mee (thin, round vermicelli-ish rice noodle)
+        </form>
+    <%} %> 
+
+
+
+
+    if ($('#meatSelect')) {
+    if ($("#meatSelect").val() === 1) {
+        this.model.set({meatType: "chicken"});
+    } else if ($("#meatSelect").val() === 2) {
+        this.model.set({meatType: "pork"});
+    } else {
+        this.model.set({meatType: "vegetarian"});
+    }
+
+};
