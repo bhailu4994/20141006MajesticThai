@@ -69,32 +69,56 @@ App.Collections.MenuItems = Backbone.Collection.extend ({
 App.Collections.StartersList = App.Collections.MenuItems.extend ({
 	model: App.Models.Starter,
 });
-var starters = [ {name: 'Thai Chicken Wings'}, {name: 'Som Tam'} ];
+var starters = [ 
+{name: 'Thai Chicken Wings', price: '40', imageUrl: 'images/chickenWings.jpg'}, 
+{name: 'Som Tam', price: '15', imageUrl: 'images/somTam.jpg'} 
+];
 
 App.Collections.EntreesList = App.Collections.MenuItems.extend ({
 	model: App.Models.Entree,
 });
-var entrees = [ {name: 'Gaeng Kiowan', needsMeat: true, meatType: 'chicken'}, {name: 'Red Curry', needsMeat: true}, {name: 'Noodle Soup', needsMeat: true, needsNoodle: true}, {name: 'Pad Thai', needsMeat: true}, {name: 'Pad Ka Pow Moo Kai Dow'}, {name: 'Chicken and Salsa on rice'} ];
+var entrees = [ 
+{name: 'Gaeng Kiew Wan', price: '35', needsMeat: true, meatType: 'chicken', imageUrl: 'images/greenCurry.jpg'}, 
+{name: 'Gaeng Pet', price: '35', needsMeat: true, imageUrl: 'images/gaengPet.gif'}, 
+{name: 'Noodle Soup', price: '15', needsMeat: true, needsNoodle: true, imageUrl: 'images/thaiNoodle.jpeg'}, 
+{name: 'Pad Thai', price: '25', needsMeat: true, imageUrl: 'images/padThai.jpg'}, 
+{name: 'Pad Ka Prow Moo Khai Dow', description: 'Make sure you slice the egg yolk open first so you can dip each bite in it. Pat\'s favorite Thai street food!', price: '30', imageUrl: 'images/padKaiDow.jpg'}, 
+{name: 'Khow Man Kai', description: 'Hainan chicken served with cucumber slices and Thai chili salsa. Delicious!', price: '20', imageUrl: 'images/khowManKai2.jpg'} 
+];
 
 App.Collections.DessertsList = App.Collections.MenuItems.extend ({
 	model: App.Models.Dessert,
 });
-var desserts = [ {name: 'Fruit Plate'} ];
+var desserts = [ 
+{name: 'Fruit Plate', price: '15', imageUrl: 'images/fruitPlate.jpg'} 
+];
 
 App.Collections.BasicDrinksList = App.Collections.MenuItems.extend ({
 	model: App.Models.BasicDrink,
 });
-var basicDrinks = [ {name: 'Coke'} ];
+var basicDrinks = [ 
+{name: 'Coke', price: '5', imageUrl: 'images/coke.jpeg'} 
+];
 
 App.Collections.BeerList = App.Collections.MenuItems.extend ({
 	model: App.Models.Beer,
 });
-var beers = [ {name: 'Chang'}, {name: 'Dead Guy Ale'}, {name: 'Heineken'}, {name: 'Newcastle'}, {name: 'Singha'} ];
+var beers = [ 
+{name: 'Chang', price: '10', imageUrl: 'images/chang.jpeg'}, 
+{name: 'Dead Guy Ale', price: '55', imageUrl: 'images/deadGuyAle.jpg'}, 
+{name: 'Heineken', price: '35', imageUrl: 'images/heineken.jpeg'}, 
+{name: 'Newcastle', price: '45', imageUrl: 'images/newcastle.jpg'}, 
+{name: 'Singha', price: '15', imageUrl: 'images/singha.jpeg'} 
+];
 
 App.Collections.ThaiDrankList = App.Collections.MenuItems.extend ({
 	model: App.Models.ThaiDrink,
 });
-var thaiDrank = [ {name: 'Thai Iced Tea'}, {name: 'Thai Red Bull'}, {name: 'Sang Som'} ];
+var thaiDrank = [ 
+{name: 'Thai Iced Tea', price: '10', imageUrl: 'images/thaiIcedTea.jpeg'}, 
+{name: 'Thai Red Bull', price: '20', imageUrl: 'images/thaiRedBull.jpeg'}, 
+{name: 'Sang Som', price: '20', imageUrl: 'images/sangSom.jpg'} 
+];
 
 
 App.Collections.ItemsToOrder = App.Collections.MenuItems.extend ({
@@ -287,6 +311,8 @@ App.Views.HItemView = Backbone.View.extend ({
         		this.model.set({meatType: "chicken"});
     		} else if ($("#meatSelect").val() == '2') {
         		this.model.set({meatType: "pork"});
+        	} else if ($("#meatSelect").val() == '3') {
+        		this.model.set({meatType: "shrimp"});
     		} else {
         		this.model.set({meatType: "vegetarian"});
     		}
@@ -305,7 +331,7 @@ App.Views.HItemView = Backbone.View.extend ({
 
 		sCartView.collection.add(this.model);
 		$('.highlightedItem').empty();
-		this.$el.html(this.model.get('name') + ' has been added to your order :)');
+		this.$el.html('<h5>' + this.model.get('name') + ' has been added to your order :)</h5>');
 		$('.highlightedItem').append(this.el);
 		// console.log(itemToOrder);
 		// console.log(sCartView.collection.length);

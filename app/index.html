@@ -26,7 +26,13 @@
         <![endif]-->
 
     <div class="container">
-        <header><h1>Majestic Thai</h1></header>
+        <header><h1>Majestic Thai</h1>
+        <nav>
+        <a href="about.html">About</a>
+        <a href="menu.html">Menu</a>
+        <a href="locations.html">Locations</a>
+        </nav>
+        </header>
         <div class="mainSecContainer">
             
 
@@ -46,6 +52,9 @@
             Please click on a menu item to expand its view.
             </div>
             </sidebar>
+            <footer>
+            Copyright 2014 Pat Love & Majestic Thai
+            </footer>
         </div>
     </div>
 
@@ -73,7 +82,7 @@
 
     <script type="text/template" id="thumbnailView">
     <button>
-    <img src="http://placekitten.com/g/75/75" />
+    <img class="thumbnail" src="<%= this.model.get('imageUrl') %>" />
     <p><%= this.model.get("name") %></p>
     </button>
     </script>
@@ -89,21 +98,29 @@
     Qty: <%=model.get('quantity')%> <button data-id=<%=model.cid%> class="removeIt">X</button> </p>
     
     <%})%>
+    <%var totalCost=30;%>
+    <p>Your bill is currently: <%=totalCost%> baht</p>
     <button>PLACE ORDER</button>
 
     </script>
-    <!--   -->
+    <!-- <%var totalCost = _.reduce(this.collection.models.get('price'), function(acum, b) {return acum+b}); console.log(totalCost);%>  -->
 
+
+
+    <!-- <img src="http://placekitten.com/g/200/200" /> -->
     <script type="text/template" id="hItemView">
-    <img src="http://placekitten.com/g/200/200" />
-    <p><%= this.model.get("name") %></p> 
+    <img class="hIImg" src="<%= this.model.get('imageUrl') %>" />
+    <h4><%= this.model.get("name") %></h4> 
+    <p><%= this.model.get('description') %></p>
+    <p><%= this.model.get('price') %> baht</p>
     <p>Quantity: <input type="text" id="quantity" value="1" size="2"></p>
    
     <% if (this.model.get('needsMeat') === true) {%>
         Please select a type of meat for this item:
         <select name="meatSelect" id="meatSelect">
-        <option value='1'>Gai (chicken)</option>
+        <option value='1'>Kai (chicken)</option>
         <option value='2'>Moo (pork)</option>
+        <option value='3'>Kung (shrimp)</option>
         <option value='3'>Mang Sa Wirat (vegetarian)</option>
         </select>
     <%}%>
