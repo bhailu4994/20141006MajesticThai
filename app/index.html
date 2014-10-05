@@ -39,10 +39,11 @@
             
             <sidebar>
             <div class="shoppingCart">
-            Shopping Cart.
+            Sawadee Khap :)
             </div>
 
             <div class="highlightedItem">
+            Please click on a menu item to expand its view.
             </div>
             </sidebar>
         </div>
@@ -85,10 +86,10 @@
     <p> <%=model.get('name')%> 
     <% if (model.get('needsMeat') === true) {%> (<%=model.get('meatType')%>) <%}%>
     <% if (model.get('needsNoodle') === true) {%> (<%=model.get('noodleType')%>) <%}%>
-    Qty: <%=model.get('quantity')%> <button>X</button> </p>
+    Qty: <%=model.get('quantity')%> <button data-id=<%=model.cid%> class="removeIt">X</button> </p>
     
     <%})%>
-    <button class="removeIt">PLACE ORDER</button>
+    <button>PLACE ORDER</button>
 
     </script>
     <!--   -->

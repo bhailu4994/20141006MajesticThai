@@ -32,7 +32,25 @@ App.Models.Entree = App.Models.MenuItem.extend ({
 	}
 });
 
+App.Models.Dessert = App.Models.MenuItem.extend ({
+	defaults: {
+		name: 'i',
+	}
+});
+
+App.Models.BasicDrink = App.Models.MenuItem.extend ({
+	defaults: {
+		name: 'i',
+	},
+});
+
 App.Models.Beer = App.Models.MenuItem.extend ({
+	defaults: {
+		name: 'i',
+	},
+});
+
+App.Models.ThaiDrink = App.Models.MenuItem.extend ({
 	defaults: {
 		name: 'i',
 	},
@@ -58,10 +76,25 @@ App.Collections.EntreesList = App.Collections.MenuItems.extend ({
 });
 var entrees = [ {name: 'Gaeng Kiowan', needsMeat: true, meatType: 'chicken'}, {name: 'Red Curry', needsMeat: true}, {name: 'Noodle Soup', needsMeat: true, needsNoodle: true}, {name: 'Pad Thai', needsMeat: true}, {name: 'Pad Ka Pow Moo Kai Dow'}, {name: 'Chicken and Salsa on rice'} ];
 
+App.Collections.DessertsList = App.Collections.MenuItems.extend ({
+	model: App.Models.Dessert,
+});
+var desserts = [ {name: 'Fruit Plate'} ];
+
+App.Collections.BasicDrinksList = App.Collections.MenuItems.extend ({
+	model: App.Models.BasicDrink,
+});
+var basicDrinks = [ {name: 'Coke'} ];
+
 App.Collections.BeerList = App.Collections.MenuItems.extend ({
 	model: App.Models.Beer,
 });
 var beers = [ {name: 'Chang'}, {name: 'Dead Guy Ale'}, {name: 'Heineken'}, {name: 'Newcastle'}, {name: 'Singha'} ];
+
+App.Collections.ThaiDrankList = App.Collections.MenuItems.extend ({
+	model: App.Models.ThaiDrink,
+});
+var thaiDrank = [ {name: 'Thai Iced Tea'}, {name: 'Thai Red Bull'}, {name: 'Sang Som'} ];
 
 
 App.Collections.ItemsToOrder = App.Collections.MenuItems.extend ({
@@ -127,6 +160,10 @@ App.Views.FoodView = Backbone.View.extend ({
 		entreesList.set(entrees);
 		var entreesView = new App.Views.EntreesView({collection: entreesList});
 		entreesView.render(); 
+		var dessertsList = new App.Collections.DessertsList();
+		dessertsList.set(desserts);
+		var dessertsView = new App.Views.DessertsView({collection: dessertsList});
+		dessertsView.render();
 	}
 });
 
@@ -139,20 +176,24 @@ App.Views.DrinksView = Backbone.View.extend ({
 	render: function () {
 		this.$el.html(this.template());
 		$('.dynamicViewLoader').append(this.el);
-		var basicDrinksView = new App.Views.BasicDrinksView();
+		var basicDrinksList = new App.Collections.BasicDrinksList();
+		basicDrinksList.set(basicDrinks);
+		var basicDrinksView = new App.Views.BasicDrinksView({collection: basicDrinksList});
 		basicDrinksView.render();
 		var beerList = new App.Collections.BeerList(); 
 		beerList.set(beers);
 		var beersView = new App.Views.BeersView({collection: beerList});
 		beersView.render();
-		var thaiDrankView = new App.Views.ThaiDrank();
+		var thaiDrankList = new App.Collections.ThaiDrankList(); 
+		thaiDrankList.set(thaiDrank);
+		var thaiDrankView = new App.Views.ThaiDrankView({collection: thaiDrankList});
 		thaiDrankView.render();
 	}
 });
 
 App.Views.SpecialsView = Backbone.View.extend ({
 	render: function () {
-		this.$el.html('FUCK');
+		this.$el.html('Once we can afford it we will post daily specials and combo meals here. For now though we\'re just trying to pay back our Iron Yard tuition!');
 		$('.dynamicViewLoader').append(this.el);
 	}
 });
@@ -188,9 +229,21 @@ App.Views.SCartView = Backbone.View.extend ({
 	
 	initialize: function() {
 		this.listenTo(this.collection, 'add', this.render);	/*line 75 in last project didn't have () here...*/
+		this.listenTo(this.collection, 'remove', this.render);
 	},
 
 	template: _.template( $('#sCartView').text() ),
+
+	events: {
+		'click button[class=removeIt]': 'removeFromSCart'
+	},
+
+	removeFromSCart: function (event) {
+		console.log(this.model);	/* Not working */
+		var buttonID = this.button["data-id"];
+		var toBeDeleted = this.collection.findWhere({cid: buttonID})
+		this.collection.remove(toBeDeleted);
+	},
 
 	render: function () {
 		console.log(this.collection.length);
@@ -220,7 +273,6 @@ App.Views.HItemView = Backbone.View.extend ({
 	},
 
 	addToSCartList: function(event) {
-		console.log("Seleceted: ",$("#meatSelect").val());
 		console.log(event);
 		// if (!window.itemsToOrder) { 
 		// 	window.itemsToOrder = new App.Collections.ItemsToOrder(); 
@@ -230,7 +282,7 @@ App.Views.HItemView = Backbone.View.extend ({
 
 		this.model.set({quantity: $('#quantity').val()});
 
-		if ($('#meatSelect')) {
+		if (this.model.get('needsMeat') === true) {
     		if ($("#meatSelect").val() == "1") {
         		this.model.set({meatType: "chicken"});
     		} else if ($("#meatSelect").val() == '2') {
@@ -240,7 +292,7 @@ App.Views.HItemView = Backbone.View.extend ({
     		}
 		};	
 
-		if ($('#noodleSelect')) {
+		if (this.model.get('needsNoodle') === true) {
     		if ($("#noodleSelect").val() == "1") {
         		this.model.set({noodleType: "Sen Yai"});
     		} else if ($("#noodleSelect").val() == '2') {
@@ -251,13 +303,12 @@ App.Views.HItemView = Backbone.View.extend ({
 		};	
 
 
-
-
-		this.collection.add(this.model);
-		console.log(this.model);
+		sCartView.collection.add(this.model);
+		$('.highlightedItem').empty();
+		this.$el.html(this.model.get('name') + ' has been added to your order :)');
+		$('.highlightedItem').append(this.el);
 		// console.log(itemToOrder);
-		console.log(sCartView.collection.length);
-
+		// console.log(sCartView.collection.length);
 		// console.log(this.model);
 	},
 
@@ -279,7 +330,7 @@ App.Views.StartersView = Backbone.View.extend ({
 	
 	template: _.template( $('#specificCatView').text() ),
 
-	catTitle: 'Starters',
+	catTitle: 'Starters & Sides',
 
 	render: function () {
 	this.$el.html(this.template());
@@ -316,6 +367,27 @@ App.Views.EntreesView = Backbone.View.extend ({
 });
 
 
+App.Views.DessertsView = Backbone.View.extend ({
+	
+	template: _.template( $('#specificCatView').text() ),
+
+	catTitle: 'Desserts',
+
+	render: function () {
+	this.$el.html(this.template());
+	$('.description').append(this.el);
+	this.collection.each(_.bind(this.renderChild, this));
+	},
+
+	renderChild: function(menuItem){
+    var itemView = new App.Views.ItemView({ model: menuItem });
+    itemView.render();
+    this.$el.append(itemView.el);
+  	}
+
+});
+
+
 App.Views.BasicDrinksView = Backbone.View.extend ({
 	
 	template: _.template( $('#specificCatView').text() ),
@@ -325,7 +397,14 @@ App.Views.BasicDrinksView = Backbone.View.extend ({
 	render: function () {
 	this.$el.html(this.template());
 	$('.description').append(this.el);
-	}
+	this.collection.each(_.bind(this.renderChild, this));
+	},
+
+	renderChild: function(basicDrink){
+    var itemView = new App.Views.ItemView({ model: basicDrink });
+    itemView.render();
+    this.$el.append(itemView.el);
+  	}
 });
 
 App.Views.BeersView = Backbone.View.extend ({
@@ -348,7 +427,7 @@ App.Views.BeersView = Backbone.View.extend ({
 
 });
 
-App.Views.ThaiDrank = Backbone.View.extend ({
+App.Views.ThaiDrankView = Backbone.View.extend ({
 	
 	template: _.template( $('#specificCatView').text() ),
 
@@ -357,7 +436,15 @@ App.Views.ThaiDrank = Backbone.View.extend ({
 	render: function () {
 	this.$el.html(this.template());
 	$('.description').append(this.el);
-	}
+	this.collection.each(_.bind(this.renderChild, this));
+	},
+
+	renderChild: function(menuItem){
+    var itemView = new App.Views.ItemView({ model: menuItem });
+    itemView.render();
+    this.$el.append(itemView.el);
+  	}
+
 });
 
 
