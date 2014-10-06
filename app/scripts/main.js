@@ -11,5 +11,6 @@ $(document).ready(function(){
 	var mainView = new App.Views.MainView({collection: menuItems});
 	var foodView = new App.Views.FoodView();
 	foodView.render();
+	window.totalCost=0;
 
 });
