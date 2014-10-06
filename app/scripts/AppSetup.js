@@ -2,7 +2,7 @@
 'use strict';
 
 
-window.App = {};
+window.App = {};		
 App.Models = {};
 App.Collections = {};
 App.Views = {};
@@ -70,8 +70,9 @@ App.Collections.StartersList = App.Collections.MenuItems.extend ({
 	model: App.Models.Starter,
 });
 var starters = [ 
-{name: 'Thai Chicken Wings', price: 40, imageUrl: 'images/chickenWings.jpg'}, 
-{name: 'Som Tam', price: 15, imageUrl: 'images/somTam.jpg'} 
+{name: 'Satay', description: 'Set of 4 skewers.', price: 15, needsMeat: true, imageUrl: 'images/satay.jpg' },
+{name: 'Som Tam', price: 15, imageUrl: 'images/somTam.jpg'} ,
+{name: 'Thai Chicken Wings', price: 40, imageUrl: 'images/chickenWings.jpg'} 
 ];
 
 App.Collections.EntreesList = App.Collections.MenuItems.extend ({
@@ -90,14 +91,17 @@ App.Collections.DessertsList = App.Collections.MenuItems.extend ({
 	model: App.Models.Dessert,
 });
 var desserts = [ 
-{name: 'Fruit Plate', price: 15, imageUrl: 'images/fruitPlate.jpg'} 
+{name: 'Fruit Plate', price: 15, imageUrl: 'images/fruitPlate.jpg'},
+{name: 'Khao Neow Dam', description: 'Sweet black sticky rice with shredded coconut on top.', price: 5, imageUrl: 'images/blackStickyRice.jpg'} 
 ];
 
 App.Collections.BasicDrinksList = App.Collections.MenuItems.extend ({
 	model: App.Models.BasicDrink,
 });
 var basicDrinks = [ 
-{name: 'Coke', price: 5, imageUrl: 'images/coke.jpeg'} 
+{name: 'Coconut Water', price: 15, imageUrl: 'images/coconutWater.jpeg'},
+{name: 'Coke', price: 5, imageUrl: 'images/coke.jpeg'}
+
 ];
 
 App.Collections.BeerList = App.Collections.MenuItems.extend ({
@@ -121,8 +125,9 @@ var thaiDrank = [
 ];
 
 
-App.Collections.ItemsToOrder = App.Collections.MenuItems.extend ({
-	model: App.Models.MenuItem
+App.Collections.ItemsToOrder = Backbone.Firebase.Collection.extend ({
+	model: App.Models.MenuItem,
+	firebase: "http://majesticthai.firebaseIO.com"
 });
 
 
@@ -171,7 +176,7 @@ App.Views.FoodView = Backbone.View.extend ({
 	
 	template: _.template( $('#menuSectionView').text() ),
 
-	description: 'All organic, k?',
+	description: 'Before you even ask, yes it\'s all organic. Yin dee khap.',
 
 	render: function () {
 		this.$el.html(this.template());
@@ -259,6 +264,10 @@ App.Views.SCartView = Backbone.View.extend ({
 
 	template: _.template( $('#sCartView').text() ),
 	
+	events: {
+		'click button[class=placeOrder]': 'placeOrder'
+	},
+
 	render: function () {
 		console.log(this.collection.length);
 
@@ -282,6 +291,15 @@ App.Views.SCartView = Backbone.View.extend ({
 	// 		.reduce(function (acum, b) {return acum + b;})
 	// 		.value();
 	// }
+
+	placeOrder: function(event) {
+		console.log(event);
+		this.collection.save();
+		// this.collection.reset();
+		// this.collection = new App.Collections.ItemsToOrder();
+		// itemsToOrder = new App.Collections.ItemsToOrder();
+		// this.collection = itemsToOrder;
+	}
 
 
 
@@ -320,7 +338,7 @@ App.Views.SCartItemView = Backbone.View.extend ({
 
 
 
-var itemsToOrder = new App.Collections.ItemsToOrder();
+var itemsToOrder = new App.Collections.ItemsToOrder();		/* SHOULD HAVE BEEN window.itemsToOrder? */
 var sCartView = new App.Views.SCartView({collection: itemsToOrder});
 
 
@@ -328,6 +346,7 @@ var sCartView = new App.Views.SCartView({collection: itemsToOrder});
 App.Views.HItemView = Backbone.View.extend ({
 	
 	initialize: function () {
+
 		this.collection = itemsToOrder;
 	},
 
@@ -371,7 +390,7 @@ App.Views.HItemView = Backbone.View.extend ({
 
 		window.totalCost = window.totalCost + (this.model.get('price') * this.model.get('quantity'));
 
-		sCartView.collection.add(this.model);
+		sCartView.collection.create(this.model);
 		$('.highlightedItem').empty();
 		this.$el.html('<h5>' + this.model.get('name') + ' has been added to your order :)</h5>');
 		$('.highlightedItem').append(this.el);
