@@ -70,54 +70,54 @@ App.Collections.StartersList = App.Collections.MenuItems.extend ({
 	model: App.Models.Starter,
 });
 var starters = [ 
-{name: 'Thai Chicken Wings', price: '40', imageUrl: 'images/chickenWings.jpg'}, 
-{name: 'Som Tam', price: '15', imageUrl: 'images/somTam.jpg'} 
+{name: 'Thai Chicken Wings', price: 40, imageUrl: 'images/chickenWings.jpg'}, 
+{name: 'Som Tam', price: 15, imageUrl: 'images/somTam.jpg'} 
 ];
 
 App.Collections.EntreesList = App.Collections.MenuItems.extend ({
 	model: App.Models.Entree,
 });
 var entrees = [ 
-{name: 'Gaeng Kiew Wan', price: '35', needsMeat: true, meatType: 'chicken', imageUrl: 'images/greenCurry.jpg'}, 
-{name: 'Gaeng Pet', price: '35', needsMeat: true, imageUrl: 'images/gaengPet.gif'}, 
-{name: 'Noodle Soup', price: '15', needsMeat: true, needsNoodle: true, imageUrl: 'images/thaiNoodle.jpeg'}, 
-{name: 'Pad Thai', price: '25', needsMeat: true, imageUrl: 'images/padThai.jpg'}, 
-{name: 'Pad Ka Prow Moo Khai Dow', description: 'Make sure you slice the egg yolk open first so you can dip each bite in it. Pat\'s favorite Thai street food!', price: '30', imageUrl: 'images/padKaiDow.jpg'}, 
-{name: 'Khow Man Kai', description: 'Hainan chicken served with cucumber slices and Thai chili salsa. Delicious!', price: '20', imageUrl: 'images/khowManKai2.jpg'} 
+{name: 'Gaeng Kiew Wan', price: 35, needsMeat: true, meatType: 'chicken', imageUrl: 'images/greenCurry.jpg'}, 
+{name: 'Gaeng Pet', price: 35, needsMeat: true, imageUrl: 'images/gaengPet.gif'}, 
+{name: 'Noodle Soup', price: 15, needsMeat: true, needsNoodle: true, imageUrl: 'images/thaiNoodle.jpeg'}, 
+{name: 'Pad Thai', price: 25, needsMeat: true, imageUrl: 'images/padThai.jpg'}, 
+{name: 'Pad Ka Prow Moo Khai Dow', description: 'Make sure you slice the egg yolk open first so you can dip each bite in it. Pat\'s favorite Thai street food!', price: 30, imageUrl: 'images/padKaiDow.jpg'}, 
+{name: 'Khow Man Kai', description: 'Hainan chicken served with cucumber slices and Thai chili salsa. Delicious!', price: 20, imageUrl: 'images/khowManKai2.jpg'} 
 ];
 
 App.Collections.DessertsList = App.Collections.MenuItems.extend ({
 	model: App.Models.Dessert,
 });
 var desserts = [ 
-{name: 'Fruit Plate', price: '15', imageUrl: 'images/fruitPlate.jpg'} 
+{name: 'Fruit Plate', price: 15, imageUrl: 'images/fruitPlate.jpg'} 
 ];
 
 App.Collections.BasicDrinksList = App.Collections.MenuItems.extend ({
 	model: App.Models.BasicDrink,
 });
 var basicDrinks = [ 
-{name: 'Coke', price: '5', imageUrl: 'images/coke.jpeg'} 
+{name: 'Coke', price: 5, imageUrl: 'images/coke.jpeg'} 
 ];
 
 App.Collections.BeerList = App.Collections.MenuItems.extend ({
 	model: App.Models.Beer,
 });
 var beers = [ 
-{name: 'Chang', price: '10', imageUrl: 'images/chang.jpeg'}, 
-{name: 'Dead Guy Ale', price: '55', imageUrl: 'images/deadGuyAle.jpg'}, 
-{name: 'Heineken', price: '35', imageUrl: 'images/heineken.jpeg'}, 
-{name: 'Newcastle', price: '45', imageUrl: 'images/newcastle.jpg'}, 
-{name: 'Singha', price: '15', imageUrl: 'images/singha.jpeg'} 
+{name: 'Chang', price: 10, imageUrl: 'images/chang.jpeg'}, 
+{name: 'Dead Guy Ale', price: 55, imageUrl: 'images/deadGuyAle.jpg'}, 
+{name: 'Heineken', price: 35, imageUrl: 'images/heineken.jpeg'}, 
+{name: 'Newcastle', price: 45, imageUrl: 'images/newcastle.jpg'}, 
+{name: 'Singha', price: 15, imageUrl: 'images/singha.jpeg'} 
 ];
 
 App.Collections.ThaiDrankList = App.Collections.MenuItems.extend ({
 	model: App.Models.ThaiDrink,
 });
 var thaiDrank = [ 
-{name: 'Thai Iced Tea', price: '10', imageUrl: 'images/thaiIcedTea.jpeg'}, 
-{name: 'Thai Red Bull', price: '20', imageUrl: 'images/thaiRedBull.jpeg'}, 
-{name: 'Sang Som', price: '20', imageUrl: 'images/sangSom.jpg'} 
+{name: 'Thai Iced Tea', price: 10, imageUrl: 'images/thaiIcedTea.jpeg'}, 
+{name: 'Thai Red Bull', price: 20, imageUrl: 'images/thaiRedBull.jpeg'}, 
+{name: 'Sang Som', price: 20, imageUrl: 'images/sangSom.jpg'} 
 ];
 
 
@@ -262,9 +262,9 @@ App.Views.SCartView = Backbone.View.extend ({
 	render: function () {
 		console.log(this.collection.length);
 
+		// var totalCost = this.calculateTotal(this.collection.models);		SEE Fn Below
 		this.$el.html(this.template({collection: this.collection}));			/*Need {collection: this.collection}?*/
 		$('.shoppingCart').empty();
-	
 		$('.shoppingCart').append(this.el);
 		this.collection.each(_.bind(this.renderChild, this));
 		$('.shoppingCart').prepend('YOUR ORDER:');
@@ -274,10 +274,25 @@ App.Views.SCartView = Backbone.View.extend ({
 		var sCartItemView = new App.Views.SCartItemView({ model: menuItem });
     	sCartItemView.render();
     	this.$el.prepend(sCartItemView.el);
-	}
+	},
+
+	// calculateTotal: function (collection) {
+	// 	_.chain(this.collection.models)
+	// 		.each(function(model) {return this.model.get('price')})
+	// 		.reduce(function (acum, b) {return acum + b;})
+	// 		.value();
+	// }
+
+
+
 });
 
 App.Views.SCartItemView = Backbone.View.extend ({
+	
+	initialize: function () {
+		this.collection = sCartView.collection;
+	},
+
 	tagName: 'li',
 	template: _.template( $('#sCartLineItemView').text() ),
 
@@ -289,7 +304,10 @@ App.Views.SCartItemView = Backbone.View.extend ({
 		console.log(this.model);	/* Not working */
 		// var buttonID = this.button["data-id"];
 		// var toBeDeleted = this.collection.findWhere({cid: buttonID})
+		window.totalCost = window.totalCost - (this.model.get('price') * this.model.get('quantity'));
 		this.collection.remove(this.model);
+		$('.highlightedItem').empty();
+		$('.highlightedItem').html('<h5>' + this.model.get('name') + ' has been removed from your order :)</h5>');
 	},
 
 	render: function () {
@@ -351,6 +369,7 @@ App.Views.HItemView = Backbone.View.extend ({
     		}
 		};	
 
+		window.totalCost = window.totalCost + (this.model.get('price') * this.model.get('quantity'));
 
 		sCartView.collection.add(this.model);
 		$('.highlightedItem').empty();
