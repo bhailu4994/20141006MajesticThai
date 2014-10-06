@@ -1,3 +1,28 @@
+  <script type="text/template" id="sCartLineItemView">
+  
+    <p> <%=model.get('name')%> 
+    <% if (model.get('needsMeat') === true) {%> (<%=model.get('meatType')%>) <%}%>
+    <% if (model.get('needsNoodle') === true) {%> (<%=model.get('noodleType')%>) <%}%>
+    Qty: <%=model.get('quantity')%> <button data-id=<%=model.cid%> class="removeIt">X</button> </p>
+    
+    <%})%>
+    <%var totalCost=30;%>
+    <p>Your bill is currently: <%=totalCost%> baht</p>
+    <button>PLACE ORDER</button>
+
+    </script>
+
+
+
+
+
+
+
+    
+
+
+
+
 <% if (this.model.get('name') === 'Dead Guy Ale') {
         this.model.set({nada: "March 20", content: "In his eyes she eclipses..."});
     } %> 

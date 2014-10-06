@@ -243,7 +243,7 @@ App.Views.ItemView = Backbone.View.extend ({
 	render: function () {
 		// console.log("Model: ",this.model)
 		this.$el.html(this.template());
-		$('.'+this.catTitle).append(this.el);
+		$('.'+this.catTitle).append(this.el);				/*NOT SURE THIS IS NECESSARY...SEE LAST LINE OF (e.g.) STARTERSVIEW's RENDERCHILD FN...*/
 	},
 
 });
@@ -251,30 +251,53 @@ App.Views.ItemView = Backbone.View.extend ({
 
 App.Views.SCartView = Backbone.View.extend ({
 	
+	tagName: 'ul',
 	initialize: function() {
 		this.listenTo(this.collection, 'add', this.render);	/*line 75 in last project didn't have () here...*/
 		this.listenTo(this.collection, 'remove', this.render);
 	},
 
 	template: _.template( $('#sCartView').text() ),
+	
+	render: function () {
+		console.log(this.collection.length);
+
+		this.$el.html(this.template({collection: this.collection}));			/*Need {collection: this.collection}?*/
+		$('.shoppingCart').empty();
+	
+		$('.shoppingCart').append(this.el);
+		this.collection.each(_.bind(this.renderChild, this));
+		$('.shoppingCart').prepend('YOUR ORDER:');
+	},
+
+	renderChild: function (menuItem) {
+		var sCartItemView = new App.Views.SCartItemView({ model: menuItem });
+    	sCartItemView.render();
+    	this.$el.prepend(sCartItemView.el);
+	}
+});
+
+App.Views.SCartItemView = Backbone.View.extend ({
+	tagName: 'li',
+	template: _.template( $('#sCartLineItemView').text() ),
 
 	events: {
-		'click button[class=removeIt]': 'removeFromSCart'
+		'click button': 'removeFromSCart'
 	},
 
 	removeFromSCart: function (event) {
 		console.log(this.model);	/* Not working */
-		var buttonID = this.button["data-id"];
-		var toBeDeleted = this.collection.findWhere({cid: buttonID})
-		this.collection.remove(toBeDeleted);
+		// var buttonID = this.button["data-id"];
+		// var toBeDeleted = this.collection.findWhere({cid: buttonID})
+		this.collection.remove(this.model);
 	},
 
 	render: function () {
-		console.log(this.collection.length);
-		this.$el.html(this.template({collection: this.collection}));
-		$('.shoppingCart').empty();
-		$('.shoppingCart').append(this.el);
-	}
+		// console.log("Model: ",this.model)
+		this.$el.html(this.template({model: this.model}));
+		// $('.'+this.catTitle).append(this.el);		/*NOT SURE THIS IS NECESSARY...*/
+	},
+
 });
 
 
