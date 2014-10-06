@@ -121,8 +121,9 @@ var thaiDrank = [
 ];
 
 
-App.Collections.ItemsToOrder = App.Collections.MenuItems.extend ({
-	model: App.Models.MenuItem
+App.Collections.ItemsToOrder = Backbone.Firebase.Collection.extend ({
+	model: App.Models.MenuItem,
+	firebase: "http://majesticthai.firebaseIO.com"
 });
 
 
@@ -259,6 +260,10 @@ App.Views.SCartView = Backbone.View.extend ({
 
 	template: _.template( $('#sCartView').text() ),
 	
+	events: {
+		'click button[class=placeOrder]': 'placeOrder'
+	},
+
 	render: function () {
 		console.log(this.collection.length);
 
@@ -282,6 +287,12 @@ App.Views.SCartView = Backbone.View.extend ({
 	// 		.reduce(function (acum, b) {return acum + b;})
 	// 		.value();
 	// }
+
+	placeOrder: function (event) {
+		console.log(event);
+		this.collection.save();
+		this.collection.empty();
+	}
 
 
 
