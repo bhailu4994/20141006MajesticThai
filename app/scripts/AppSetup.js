@@ -288,10 +288,12 @@ App.Views.SCartView = Backbone.View.extend ({
 	// 		.value();
 	// }
 
-	placeOrder: function (event) {
+	placeOrder: function(event) {
 		console.log(event);
 		this.collection.save();
-		this.collection.empty();
+		this.collection = new App.Collections.ItemsToOrder();
+		// itemsToOrder = new App.Collections.ItemsToOrder();
+		// this.collection = itemsToOrder;
 	}
 
 
@@ -382,7 +384,7 @@ App.Views.HItemView = Backbone.View.extend ({
 
 		window.totalCost = window.totalCost + (this.model.get('price') * this.model.get('quantity'));
 
-		sCartView.collection.add(this.model);
+		sCartView.collection.create(this.model);
 		$('.highlightedItem').empty();
 		this.$el.html('<h5>' + this.model.get('name') + ' has been added to your order :)</h5>');
 		$('.highlightedItem').append(this.el);
