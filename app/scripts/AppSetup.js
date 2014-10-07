@@ -293,8 +293,11 @@ App.Views.SCartView = Backbone.View.extend ({
 	// }
 
 	placeOrder: function(event) {
+		console.log('collection:', this.collection);
 		console.log(event);
-		this.collection.save();
+		// this.collection.save();
+		this.$el.empty();
+		alert('Your order has been placed.');
 		// this.collection.reset();
 		// this.collection = new App.Collections.ItemsToOrder();
 		// itemsToOrder = new App.Collections.ItemsToOrder();
@@ -338,7 +341,7 @@ App.Views.SCartItemView = Backbone.View.extend ({
 
 
 
-var itemsToOrder = new App.Collections.ItemsToOrder();		/* SO JAKE PUT THIS IN ROUTER INITIALIZE... SHOULD HAVE BEEN window.itemsToOrder? */
+var itemsToOrder = new App.Collections.ItemsToOrder();		 /* SO JAKE PUT THIS IN ROUTER INITIALIZE... SHOULD HAVE BEEN window.itemsToOrder? */
 var sCartView = new App.Views.SCartView({collection: itemsToOrder});
 
 
@@ -535,7 +538,4 @@ App.Views.ThaiDrankView = Backbone.View.extend ({
 });
 
 
-
-
-
-}());
+})();
