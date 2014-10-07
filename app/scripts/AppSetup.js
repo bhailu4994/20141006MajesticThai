@@ -127,7 +127,7 @@ var thaiDrank = [
 
 App.Collections.ItemsToOrder = Backbone.Firebase.Collection.extend ({
 	model: App.Models.MenuItem,
-	firebase: "http://majesticthai.firebaseIO.com"
+	firebase: "http://majesticthai.firebaseIO.com/orders/" + Date.now()
 });
 
 
@@ -338,7 +338,7 @@ App.Views.SCartItemView = Backbone.View.extend ({
 
 
 
-var itemsToOrder = new App.Collections.ItemsToOrder();		/* SHOULD HAVE BEEN window.itemsToOrder? */
+var itemsToOrder = new App.Collections.ItemsToOrder();		/* SO JAKE PUT THIS IN ROUTER INITIALIZE... SHOULD HAVE BEEN window.itemsToOrder? */
 var sCartView = new App.Views.SCartView({collection: itemsToOrder});
 
 
