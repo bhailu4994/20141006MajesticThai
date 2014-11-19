@@ -281,6 +281,7 @@ App.Views.SCartView = Backbone.View.extend ({
 
 	renderChild: function (menuItem) {
 		var sCartItemView = new App.Views.SCartItemView({ model: menuItem });
+
     	sCartItemView.render();
     	this.$el.prepend(sCartItemView.el);
 	},
@@ -295,7 +296,10 @@ App.Views.SCartView = Backbone.View.extend ({
 	placeOrder: function(event) {
 		console.log('collection:', this.collection);
 		// this.collection.save();
+		// this.collection.create('PLACED');
 		alert('Your order has been placed.');
+
+		console.log('hi');
 		$('.highlightedItem').empty();
 		this.$el.empty();
 		// this.collection.reset();
@@ -303,7 +307,6 @@ App.Views.SCartView = Backbone.View.extend ({
 		// itemsToOrder = new App.Collections.ItemsToOrder();
 		// this.collection = itemsToOrder;
 	}
-
 
 
 });

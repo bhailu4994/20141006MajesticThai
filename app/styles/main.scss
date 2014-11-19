@@ -165,6 +165,7 @@ sidebar {
     vertical-align: top;
     background: RGBA(251, 225, 163, 1);
     min-height: 250px;
+    padding-top: 1em;
 }
 
 // ul {
@@ -204,5 +205,11 @@ li {                                /* Not sure why making the p a block element
 
 select {
     margin-bottom: 1em;
+}
+
+footer {
+    margin-top: 1em;
+    border-top: 1px solid silver;
+    text-align: center;
 }
 
