@@ -84,7 +84,7 @@ var entrees = [
 {name: 'Noodle Soup', price: 15, needsMeat: true, needsNoodle: true, imageUrl: 'images/thaiNoodle.jpeg'}, 
 {name: 'Pad Thai', price: 25, needsMeat: true, imageUrl: 'images/padThai.jpg'}, 
 {name: 'Pad Ka Prow Moo Khai Dow', description: 'Make sure you slice the egg yolk open first so you can dip each bite in it. Pat\'s favorite Thai street food!', price: 30, imageUrl: 'images/padKaiDow.jpg'}, 
-{name: 'Khow Man Kai', description: 'Hainan chicken served with cucumber slices and Thai chili salsa. Delicious!', price: 20, imageUrl: 'images/khowManKai2.jpg'} 
+{name: 'Khow Man Kai', description: 'Hainan chicken served with cucumber slices and Thai chili salsa. Delicious!', price: 20, imageUrl: 'images/khowManKai3.jpg'} 
 ];
 
 App.Collections.DessertsList = App.Collections.MenuItems.extend ({
@@ -176,7 +176,7 @@ App.Views.FoodView = Backbone.View.extend ({
 	
 	template: _.template( $('#menuSectionView').text() ),
 
-	description: 'Before you even ask, yes it\'s all organic. Yin dee khap.',
+	description: 'Before you even ask, yes it\'s all organic. Mai pen rai.',
 
 	render: function () {
 		this.$el.html(this.template());
@@ -200,7 +200,7 @@ App.Views.DrinksView = Backbone.View.extend ({
 	
 	template: _.template( $('#menuSectionView').text() ),
 
-	description: 'Our drinks are the shit yo.',
+	description: 'Our drinks make it rain like it\'s monsoon season.',
 
 	render: function () {
 		this.$el.html(this.template());
@@ -294,10 +294,10 @@ App.Views.SCartView = Backbone.View.extend ({
 
 	placeOrder: function(event) {
 		console.log('collection:', this.collection);
-		console.log(event);
 		// this.collection.save();
-		this.$el.empty();
 		alert('Your order has been placed.');
+		$('.highlightedItem').empty();
+		this.$el.empty();
 		// this.collection.reset();
 		// this.collection = new App.Collections.ItemsToOrder();
 		// itemsToOrder = new App.Collections.ItemsToOrder();
