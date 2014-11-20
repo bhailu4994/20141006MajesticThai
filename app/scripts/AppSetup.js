@@ -165,7 +165,7 @@ App.Views.MainView = Backbone.View.extend ({
 	events: {
 		'click button[class=food]': 'renderFoodView',
 		'click button[class=drinks]': 'renderDrinksView',
-		'click button[class=specials]': 'renderSpecialsView'
+		'click button[class=specials]': 'renderSpecialsView',
 	},
 
 	renderFoodView: function() {
@@ -187,6 +187,18 @@ App.Views.MainView = Backbone.View.extend ({
 	}
 
 });
+
+
+// App.Views.AboutView = Backbone.View.extend ({
+// 	initialize: function() {
+// 		this.render();
+// 	},
+
+// 	render: function() {
+// 		this.$el.html('Yo');
+// 		$('.loadMenu').append(this.el);
+// 	}
+// });
 
 
 App.Views.FoodView = Backbone.View.extend ({	
@@ -296,8 +308,8 @@ App.Views.SCartView = Backbone.View.extend ({
 		// $('.shoppingCart').prepend('YOUR ORDER:');
 	},
 
-	renderChild: function (menuItem) {
-		var sCartItemView = new App.Views.SCartItemView({ model: menuItem });
+	renderChild: function (itemToOrder) {
+		var sCartItemView = new App.Views.SCartItemView({ model: itemToOrder });		/* menuItem }); */
 
     	sCartItemView.render();
     	this.$el.prepend(sCartItemView.el);
@@ -385,7 +397,9 @@ App.Views.HItemView = Backbone.View.extend ({
 		// 	window.sCartView = new App.Views.SCartView({collection: window.itemsToOrder});
 		// }
 		// var itemToOrder = this.model;
-		window.newModel = new App.Models.ItemToOrder({name: this.model.get('name')});
+		
+		window.newModel = new App.Models.ItemToOrder({name: this.model.get('name'), price: this.model.get('price')});
+		// could set imgUrl here too but not sure it is needed in database...
 
 		newModel.set({quantity: $('#quantity').val()});
 
@@ -562,6 +576,35 @@ App.Views.ThaiDrankView = Backbone.View.extend ({
   	}
 
 });
+
+
+
+
+
+// App.AppRouter = Backbone.Router.extend({
+// 	routes: {
+// 		//URL to match	//function called when the hash matches
+
+// 		// ''				: 'index',				//	url/#
+// 		'about'			: 'about'				//	url/#login
+// 	},
+
+// 	initialize: function() {
+// 		console.log('yo');
+// 	},
+
+// 	about: function(e){
+// 		// var aboutView = new App.Views.AboutView();
+// 	    e.preventDefault();
+// 	    alert('f');
+// 	    console.log('poop');
+// 	},
+// });
+
+// window.appRouter = new App.AppRouter();
+
+
+
 
 
 })();
