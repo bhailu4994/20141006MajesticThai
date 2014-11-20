@@ -56,9 +56,23 @@ App.Models.ThaiDrink = App.Models.MenuItem.extend ({
 	},
 });
 
-// App.Models.ItemToOrder = App.Models.MenuItem.extend({
+App.Models.ItemToOrder = App.Models.MenuItem.extend({
 
+});
+
+
+
+// App.Models.Order = Backbone.Model.extend ({
+//     defaults: {
+//         order: [],
+//         placed: new Date().getTime(),
+//         complete: false,
+//         total: 0,
+//     },
+//     firebase: new Backbone.Firebase('http://majesticthai.firebaseIO.com/orders')
 // });
+
+
 
 // COLLECTIONS
 
@@ -125,10 +139,13 @@ var thaiDrank = [
 ];
 
 
+
 App.Collections.ItemsToOrder = Backbone.Firebase.Collection.extend ({
 	model: App.Models.MenuItem,
 	firebase: "http://majesticthai.firebaseIO.com/orders/" + Date.now()
 });
+
+
 
 
 // VIEWS
@@ -273,10 +290,10 @@ App.Views.SCartView = Backbone.View.extend ({
 
 		// var totalCost = this.calculateTotal(this.collection.models);		SEE Fn Below
 		this.$el.html(this.template({collection: this.collection}));			/*Need {collection: this.collection}?*/
-		$('.shoppingCart').empty();
+		// $('.shoppingCart').empty();
 		$('.shoppingCart').append(this.el);
 		this.collection.each(_.bind(this.renderChild, this));
-		$('.shoppingCart').prepend('YOUR ORDER:');
+		// $('.shoppingCart').prepend('YOUR ORDER:');
 	},
 
 	renderChild: function (menuItem) {
@@ -352,7 +369,6 @@ var sCartView = new App.Views.SCartView({collection: itemsToOrder});
 App.Views.HItemView = Backbone.View.extend ({
 	
 	initialize: function () {
-
 		this.collection = itemsToOrder;
 	},
 
@@ -369,37 +385,44 @@ App.Views.HItemView = Backbone.View.extend ({
 		// 	window.sCartView = new App.Views.SCartView({collection: window.itemsToOrder});
 		// }
 		// var itemToOrder = this.model;
+		window.newModel = new App.Models.ItemToOrder({name: this.model.get('name')});
 
-		this.model.set({quantity: $('#quantity').val()});
+		newModel.set({quantity: $('#quantity').val()});
 
 		if (this.model.get('needsMeat') === true) {
+			newModel.set({needsMeat: true});
     		if ($("#meatSelect").val() == "1") {
-        		this.model.set({meatType: "chicken"});
+        		newModel.set({meatType: "chicken"});
     		} else if ($("#meatSelect").val() == '2') {
-        		this.model.set({meatType: "pork"});
+        		newModel.set({meatType: "pork"});
         	} else if ($("#meatSelect").val() == '3') {
-        		this.model.set({meatType: "shrimp"});
+        		newModel.set({meatType: "shrimp"});
     		} else {
-        		this.model.set({meatType: "vegetarian"});
+        		newModel.set({meatType: "vegetarian"});
     		}
 		};	
 
 		if (this.model.get('needsNoodle') === true) {
+			newModel.set({needsNoodle: true});
     		if ($("#noodleSelect").val() == "1") {
-        		this.model.set({noodleType: "Sen Yai"});
+        		newModel.set({noodleType: "Sen Yai"});
     		} else if ($("#noodleSelect").val() == '2') {
-        		this.model.set({noodleType: "Sen Lek"});
+        		newModel.set({noodleType: "Sen Lek"});
     		} else {
-        		this.model.set({noodleType: "Sen Mee"});
+        		newModel.set({noodleType: "Sen Mee"});
     		}
 		};	
 
-		window.totalCost = window.totalCost + (this.model.get('price') * this.model.get('quantity'));
+		window.totalCost = window.totalCost + (this.model.get('price') * newModel.get('quantity'));
 
-		sCartView.collection.create(this.model);
-		$('.highlightedItem').empty();
+		sCartView.collection.add(newModel);
+		console.log(itemsToOrder);
+		console.log(sCartView.collection);
+		// $('.highlightedItem').empty();
 		this.$el.html('<h5>' + this.model.get('name') + ' has been added to your order :)</h5>');
-		$('.highlightedItem').append(this.el);
+		// $('.highlightedItem').append(this.el);
+
+
 		// console.log(itemToOrder);
 		// console.log(sCartView.collection.length);
 		// console.log(this.model);
