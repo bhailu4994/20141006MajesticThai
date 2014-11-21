@@ -172,6 +172,18 @@ sidebar {
 //     list-style: none;
 // }
 
+.purple {
+    color: RGBA(140, 82, 192, 1);
+}
+
+.center {
+    text-align: center;
+}
+
+.ten {
+    max-width: 10em;
+}
+
 li {                                /* Not sure why making the p a block element INSIDE the li still causes it to knock shit down... */
     display: inline-block;
     max-width: 75px;
