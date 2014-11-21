@@ -73,6 +73,13 @@ App.Models.ItemToOrder = App.Models.MenuItem.extend({
 // });
 
 
+App.Models.TagOC = Backbone.Model.extend ({
+	defaults: {
+		orderComplete: true,
+		whenPlaced: new Date().getTime()
+	}
+});
+
 
 // COLLECTIONS
 
@@ -327,10 +334,15 @@ App.Views.SCartView = Backbone.View.extend ({
 		// this.collection.save();
 		// this.collection.create('PLACED');
 		alert('Your order has been placed.');
+		var tagOC = new App.Models.TagOC({totalPrice: totalCost});
+		this.collection.add(tagOC);										// Next time I won't do it this way (should instead add the placed order to a firebase collection of placed orders).
+		document.location.reload(true);
 
 		console.log('hi');
+		// window.itemsToOrder = new App.Collections.ItemsToOrder();
 		$('.highlightedItem').empty();
 		this.$el.empty();
+
 		// this.collection.reset();
 		// this.collection = new App.Collections.ItemsToOrder();
 		// itemsToOrder = new App.Collections.ItemsToOrder();
@@ -373,7 +385,7 @@ App.Views.SCartItemView = Backbone.View.extend ({
 
 
 
-var itemsToOrder = new App.Collections.ItemsToOrder();		 /* SO JAKE PUT THIS IN ROUTER INITIALIZE... SHOULD HAVE BEEN window.itemsToOrder? */
+window.itemsToOrder = new App.Collections.ItemsToOrder();		 /* SO JAKE PUT THIS IN ROUTER INITIALIZE... SHOULD HAVE BEEN window.itemsToOrder? */
 var sCartView = new App.Views.SCartView({collection: itemsToOrder});
 
 
