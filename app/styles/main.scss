@@ -73,7 +73,7 @@ body {
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     .container {
-        max-width: 730px;
+        max-width: 840px;
     }
 
     /* Remove the padding we set earlier */
@@ -151,8 +151,11 @@ section {
 
 .description p {
     text-align: center;
-    padding-top: 20px;
-    padding-bottom: 25px;
+    padding: 25px;
+}
+
+.description button p {
+    padding: 13px 0 7px;
 }
 
 h3 {
@@ -165,7 +168,7 @@ sidebar {
     vertical-align: top;
     background: RGBA(251, 225, 163, 1);
     min-height: 250px;
-    padding-top: 1em;
+    padding: 1em;
 }
 
 // ul {
@@ -205,6 +208,38 @@ li {                                /* Not sure why making the p a block element
 
 .shoppingCart {
     font-size: 0.75em;
+}
+
+.yo {
+    text-decoration: underline;
+    font-style: italic;
+    font-weight: bold;
+}
+
+sidebar ul {
+    padding: 0;
+}
+
+sidebar li {
+    display: block;
+    padding-left: 2em;
+    width: 100%;
+    max-width: 100%;
+}
+
+.total {
+    width: 100%;
+    margin-top: 3em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.btnPO {
+    text-align: center;
+    margin: 0 auto;
+    padding-bottom: 2em;
+    border-bottom: 1px solid black;
+
 }
 
 .hIImg {

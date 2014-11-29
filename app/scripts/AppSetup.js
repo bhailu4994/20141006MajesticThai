@@ -257,8 +257,14 @@ App.Views.DrinksView = Backbone.View.extend ({
 });
 
 App.Views.SpecialsView = Backbone.View.extend ({
+
+	template: _.template( $('#menuSectionView').text() ),
+
+	description: 'Once we can afford it we will post daily specials and combo meals here. For now though we\'re just trying to pay back our Iron Yard tuition!',
+
 	render: function () {
-		this.$el.html('Once we can afford it we will post daily specials and combo meals here. For now though we\'re just trying to pay back our Iron Yard tuition!');
+		this.$el.html(this.template());
+		// this.$el.html('Once we can afford it we will post daily specials and combo meals here. For now though we\'re just trying to pay back our Iron Yard tuition!');
 		$('.dynamicViewLoader').append(this.el);
 	}
 });

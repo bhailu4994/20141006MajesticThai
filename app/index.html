@@ -47,7 +47,7 @@
             --><sidebar>
             <div class="shoppingCart">
             <p class="purple center">Sawadee Khap :)</p>
-            <p>YOUR ORDER:</p>
+            <p class="yo">YOUR ORDER:</p>
             </div>
 
             <div class="highlightedItem">
@@ -97,14 +97,16 @@
 <!--     <%var totalCost=30;%> -->
     <script type="text/template" id="sCartView">
 
-    <li><p class="ten">Your bill is currently: <%=window.totalCost%> baht</p>
-    <button class="placeOrder">PLACE ORDER</button></li>
+    <p class="purple total">Your bill is currently: <%=window.totalCost%> baht</p>
+    <div class="btnPO">
+    <button class="placeOrder">PLACE ORDER</button>
+    </div>
     </script>
 
 
 <!-- TOOK THIS OUT FROM BELOW WHEN ADDING sCart renderChild:    <% _(this.collection.models).each(function(model) {%> -->
     <script type="text/template" id="sCartLineItemView">
-    <p class="purple ten"> <%=model.get('name')%> 
+    <p class=""> <%=model.get('name')%> 
     <% if (model.get('needsMeat') === true) {%> (<%=model.get('meatType')%>) <%}%>
     <% if (model.get('needsNoodle') === true) {%> (<%=model.get('noodleType')%>) <%}%>
     Qty: <%=model.get('quantity')%> <button class="removeIt">X</button> </p>
