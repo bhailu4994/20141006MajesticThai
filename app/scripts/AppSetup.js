@@ -61,7 +61,6 @@ App.Models.ItemToOrder = App.Models.MenuItem.extend({
 });
 
 
-
 // App.Models.Order = Backbone.Model.extend ({
 //     defaults: {
 //         order: [],
@@ -154,7 +153,6 @@ App.Collections.ItemsToOrder = Backbone.Firebase.Collection.extend ({
 
 
 
-
 // VIEWS
 
 App.Views.MainView = Backbone.View.extend ({
@@ -173,6 +171,7 @@ App.Views.MainView = Backbone.View.extend ({
 		'click button[class=food]': 'renderFoodView',
 		'click button[class=drinks]': 'renderDrinksView',
 		'click button[class=specials]': 'renderSpecialsView',
+		// 'click a[class=about]': 'renderAboutView'
 	},
 
 	renderFoodView: function() {
@@ -191,7 +190,12 @@ App.Views.MainView = Backbone.View.extend ({
 		$('.dynamicViewLoader').empty();
 		var specialsView = new App.Views.SpecialsView();
 		specialsView.render();
-	}
+	},
+
+	// renderAboutView: function() {
+	// 	$('.loadMenu').empty();
+	// 	var aboutView = new App.Views.AboutView();
+	// }
 
 });
 
@@ -204,7 +208,8 @@ App.Views.MainView = Backbone.View.extend ({
 // 	render: function() {
 // 		this.$el.html('Yo');
 // 		$('.loadMenu').append(this.el);
-// 	}
+// 	},
+
 // });
 
 

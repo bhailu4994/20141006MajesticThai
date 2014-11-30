@@ -5,6 +5,28 @@ var gulp = require('gulp');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
+var exec = require('child_process').exec;
+var prompt = require('gulp-prompt');
+var mainBowerFiles = require('main-bower-files');
+
+gulp.task('deploy', function() {
+
+  gulp.src('/')
+    .pipe($.prompt.prompt({
+        type: 'confirm',
+        name: 'task',
+        message: 'This will deploy to GitHub Pages. Have you already built your application and pushed your updated master branch?'
+    }, function(res){
+      if (res.task){
+        console.log('Attempting: "git subtree push --prefix dist origin gh-pages"');
+        exec('git subtree push --prefix dist origin gh-pages', function(err, stdout, stderr) {
+            console.log(stdout);
+            console.log(stderr);
+        });
+      } else { console.log('Please do this first and then run `gulp deploy` again.'); }
+    }));
+
+});
 
 gulp.task('styles', function () {
     return gulp.src('app/styles/main.scss')
@@ -130,5 +152,5 @@ gulp.task('watch', ['connect', 'serve'], function () {
     gulp.watch('app/styles/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.js', ['scripts']);
     gulp.watch('app/images/**/*', ['images']);
-    gulp.watch('bower.json', ['wiredep']);
+    // gulp.watch('bower.json', ['wiredep']);
 });
