@@ -1,0 +1,148 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>20141006MajesticThai</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="styles/vendor.css">
+
+        <link rel="stylesheet" href="styles/main.css">
+        <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700|Allura' rel='stylesheet' type='text/css'>
+
+        <script src="scripts/vendor/modernizr.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="container">
+            <header>
+                <h1>Majestic Thai</h1>
+                <nav>
+                    <a class="about" href="#/about">About</a>
+                    <a class="main" href="">Menu</a>
+                    <a href="#/locations">Locations</a>
+                </nav>
+            </header>
+            <div class="mainSecContainer">
+                
+                <!-- MainView -->
+                <section class="loadMenu">
+                    
+                </section><!--
+             
+             --><sidebar>
+                    <div class="shoppingCart">
+                        <p class="purple center">Sawadee Khap :)</p>
+                        <p class="yo">YOUR ORDER:</p>
+                    </div>
+
+                    <div class="highlightedItem">
+                        <p>
+                            Please click on a menu item to expand its view.
+                        </p>
+                    </div>
+                </sidebar>
+                <footer>
+                Copyright 2014 Pat Love & Majestic Thai
+                </footer>
+            </div>
+        </div>
+
+
+    <script type="text/template" id="topNav">
+    <nav>
+        <button class="food">Eat</button>
+        <button class="drinks">Drink</button>
+        <button class="specials">Rip Us Off</button>
+    </nav>
+    <div class="dynamicViewLoader">
+    </div>
+    </script>
+
+    <script type="text/template" id="menuSectionView">
+    <div class="description">
+    <p><%= this.description %></p>
+    </div>
+    </script>
+
+    <script type="text/template" id="specificCatView">
+    <h3><%= this.catTitle %></h3>
+    <ul class="<%= this.catTitle %>"></ul>  
+    </script>
+
+    <script type="text/template" id="thumbnailView">
+    <button>
+    <img class="thumbnail" src="<%= this.model.get('imageUrl') %>" />
+    <p><%= this.model.get("name") %></p>
+    </button>
+    </script>
+
+
+<!--     <%=collection.length%> items are in your cart. -->
+<!--     <p>YOUR ORDER:</p> -->
+<!--     <%var totalCost=30;%> -->
+    <script type="text/template" id="sCartView">
+
+    <p class="purple total">Your bill is currently: <%=window.totalCost%> baht</p>
+    <div class="btnPO">
+    <button class="placeOrder">PLACE ORDER</button>
+    </div>
+    </script>
+
+
+<!-- TOOK THIS OUT FROM BELOW WHEN ADDING sCart renderChild:    <% _(this.collection.models).each(function(model) {%> -->
+    <script type="text/template" id="sCartLineItemView">
+    <p class="">- <%=model.get('name')%> 
+    <% if (model.get('needsMeat') === true) {%> (<%=model.get('meatType')%>) <%}%>
+    <% if (model.get('needsNoodle') === true) {%> (<%=model.get('noodleType')%>) <%}%>
+    Qty: <%=model.get('quantity')%> <button class="removeIt">X</button> </p>
+    </script>
+    <!-- <%var totalCost = _.reduce(this.collection.models.get('price'), function(acum, b) {return acum+b}); console.log(totalCost);%>  -->
+
+
+
+    <!-- <img src="http://placekitten.com/g/200/200" /> -->
+    <script type="text/template" id="hItemView">
+    <img class="hIImg" src="<%= this.model.get('imageUrl') %>" />
+    <h4><%= this.model.get("name") %></h4> 
+    <p><%= this.model.get('description') %></p>
+    <p><%= this.model.get('price') %> baht</p>
+    <p>Quantity: <input type="text" id="quantity" value="1" size="2"></p>
+   
+    <% if (this.model.get('needsMeat') === true) {%>
+        Please select a type of meat for this item:
+        <select name="meatSelect" id="meatSelect">
+        <option value='1'>Kai (chicken)</option>
+        <option value='2'>Moo (pork)</option>
+        <option value='3'>Kung (shrimp)</option>
+        <option value='3'>Mang Sa Wirat (vegetarian)</option>
+        </select>
+    <%}%>
+
+    <% if (this.model.get('needsNoodle') === true) {%>
+        Please select a type of noodle for this item:
+        <select name="noodleSelect" id="noodleSelect">
+        <option value='1'>Sen Yai (thick flat noodle)</option>
+        <option value='2'>Sen Lek (small flat noodle)</option>
+        <option value='3'>Sen Mee (thin round rice noodle)</option>
+        </select>
+    <%}%>
+
+    <button class="addIt">ADD TO MY ORDER</button>  
+    </script>
+    <!-- Change above to description -->
+
+
+
+
+        <script src="scripts/vendor.js"></script>
+
+
+        <script src="scripts/main.js"></script>
+</body>
+</html>
